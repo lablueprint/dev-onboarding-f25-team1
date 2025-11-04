@@ -8,7 +8,6 @@ export default function Post() {
 
   function handleBookmarkPress() {
     setIsBookmarked(!isBookmarked);
-    console.log('Bookmark state:', !isBookmarked);
     /*
       TODO: setup backup schema to store saved post info
       and issue POST / DELETE requests to server accordingly
