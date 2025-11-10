@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import Post from '../../components/Post';
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import Post from "../../components/Post";
 
 export default function PostHome() {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.container}>
-            <Text>Post Home Page</Text>
-            <Post />
-        </View>
+      <View style={styles.container}>
+        <Text>Post Home Page</Text>
+        <Post title="First Post" description="Hello world. This is a post" />
+      </View>
     </ScrollView>
   );
 }
@@ -15,11 +15,11 @@ export default function PostHome() {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: "#f9fafb",
   },
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
-  }
+  },
 });

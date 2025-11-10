@@ -11,7 +11,7 @@ export default function Landing() {
       <Button title="Go to Example Page" onPress={() => router.push('/example/example')} />
       <Button title="Go to Post Home Page" onPress={() => router.push('/post/home')} />
       <Button title="Go to Signup Page" onPress={() => router.push('/signup/signup')} />
-      
+      <Button title="Go to Login Page" onPress={() => router.push('/login/login')} />
     </View>
   );
 }
