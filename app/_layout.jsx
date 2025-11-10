@@ -31,6 +31,15 @@ export default function RootLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="login/login"
+        options={{
+          title: 'Login',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="star" size={size} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

@@ -10,6 +10,7 @@ export default function Landing() {
       <Text style={styles.title}>Welcome to Blueprint!</Text>
       <Button title="Go to Example Page" onPress={() => router.push('/example/example')} />
       <Button title="Go to Post Home Page" onPress={() => router.push('/post/home')} />
+      <Button title="Go to Login Page" onPress={() => router.push('/login/login')} />
     </View>
   );
 }
