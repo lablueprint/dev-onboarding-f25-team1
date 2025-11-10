@@ -1,4 +1,4 @@
-import { IconMessagePlus } from '@tabler/icons-react-native';
+import { IconMessageCircle } from '@tabler/icons-react-native';
 import { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
@@ -28,7 +28,7 @@ export default function Post() {
             </Pressable>
           </View>
           <View style={styles.commentContainer}>
-              <IconMessagePlus/>
+              <IconMessageCircle/>
               <TextInput
                   style={styles.input}
                   placeholder="Write a comment..."
