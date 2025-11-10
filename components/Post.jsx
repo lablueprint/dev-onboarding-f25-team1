@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useState } from 'react';
 
 export default function Post() {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -11,13 +11,13 @@ export default function Post() {
         <View style={styles.row}>
           <Text style={styles.postText}>This is one post</Text>
           <Pressable
-            onPress={() => setIsBookmarked(!isBookmarked)}
-            style={styles.bookmarkButton}
+            onPress={() => setIsLiked(!isLiked)}
+            style={styles.heartButton}
           >
-            {isBookmarked ? (
-              <FontAwesome name="bookmark" size={24} color="blue" />
+            {isLiked ? (
+              <FontAwesome name="heart" size={30} color="red" />
             ) : (
-              <FontAwesome name="bookmark-o" size={24} color="grey" />
+              <FontAwesome name="heart-o" size={30} color="grey" />
             )}
           </Pressable>
         </View>
