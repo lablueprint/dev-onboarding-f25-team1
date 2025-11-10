@@ -10,6 +10,7 @@ export default function Post() {
 
   function handleBookmarkPress() {
     setIsBookmarked(!isBookmarked);
+
     /*
       TODO: setup backup schema to store saved post info
       and issue POST / DELETE requests to server accordingly
@@ -26,16 +27,10 @@ export default function Post() {
             <Pressable style={styles.bookmarkButton} onPress={handleBookmarkPress}>
               <Image source={bookmarkIconSource} style={styles.image} />
             </Pressable>
-            <Pressable
-            onPress={() => setIsLiked(!isLiked)}
-            style={styles.heartButton}
-          >
-            {isLiked ? (
-              <FontAwesome name="heart" size={30} color="red" />
-            ) : (
-              <FontAwesome name="heart-o" size={30} color="grey" />
-            )}
-          </Pressable>
+            <Pressable onPress={() => setIsLiked(!isLiked)}>
+              {isLiked ? (<FontAwesome name="heart" size={25} color="red" />) 
+              : (<FontAwesome name="heart-o" size={25} color="grey" />)}
+            </Pressable>
           </View>
       </View>
     </ScrollView>
@@ -62,5 +57,5 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     alignSelf: 'center',
-  },
+  }
 });
