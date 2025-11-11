@@ -1,4 +1,4 @@
-import { IconMessageCircle } from '@tabler/icons-react-native';
+import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
 import { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
@@ -7,6 +7,8 @@ const notBookmarkedImage = require('../assets/images/post_not_bookmarked.png');
 export default function Post() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [text, setText] = useState('');
+  const [showCommentBox, setShowCommentBox] = useState(false);
+  const [isCommented, setIsCommented] = useState(false);
 
   function handleBookmarkPress() {
     setIsBookmarked(!isBookmarked);
@@ -16,28 +18,52 @@ export default function Post() {
     */
   }
 
+  function handleCommentPress() {
+    setShowCommentBox(!showCommentBox);
+    /* 
+      TODO: setup backend schema to store comment information
+      and issue POST / DELETE / GET requests 
+    */
+  }
+
   const bookmarkIconSource = isBookmarked ? bookmarkedImage : notBookmarkedImage;
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.container}>
-          <View style={styles.postRow}>
-            <Text>This is one example post</Text>
-            <Pressable style={styles.bookmarkButton} onPress={handleBookmarkPress}>
-              <Image source={bookmarkIconSource} style={styles.image} />
+      <View style={styles.container}>
+        <View style={styles.postRow}>
+          <Text>This is one example post</Text>
+          <Pressable style={styles.bookmarkButton} onPress={handleBookmarkPress}>
+            <Image source={bookmarkIconSource} style={styles.image} />
+          </Pressable>
+        </View>
+
+        <View style={styles.commentIconRow}>
+          <Pressable onPress={handleCommentPress}>
+            <IconMessageCircle size={24} color="black" />
+          </Pressable>
+        </View>
+
+        {showCommentBox && (
+          <View style={styles.commentContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Write a comment..."
+              value={text}
+              onChangeText={setText}
+              multiline
+            />
+            <Pressable
+              onPressIn={() => setIsCommented(true)}
+              onPressOut={() => setIsCommented(false)}
+            >
+              {isCommented
+                ? <IconCircleArrowUpFilled size={28} color="black" />
+                : <IconCircleArrowUp size={28} color="black" />}
             </Pressable>
           </View>
-          <View style={styles.commentContainer}>
-              <IconMessageCircle/>
-              <TextInput
-                  style={styles.input}
-                  placeholder="Write a comment..."
-                  value={text}
-                  onChangeText={setText}
-                  multiline
-              />
-            </View>
-        </View>
+        )}
+      </View>
     </ScrollView>
   );
 }
@@ -71,10 +97,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
+    borderColor: '#e9e9e9ff',
+    borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 5,
+    backgroundColor: '#e9e9e9ff',
+  },
+  commentIconRow: {
+    paddingRight: 150,
   },
   input: {
     flex: 1,
