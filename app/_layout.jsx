@@ -59,6 +59,17 @@ export default function RootLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="create-post/create-post"
+        options={{
+          title: 'Create Post',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="create" size={size} color={color} />
+          ),
+        }}
+      />
     </Tabs>
+    
   );
 }
