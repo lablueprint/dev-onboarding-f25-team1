@@ -30,6 +30,34 @@ export default function RootLayout() {
             <Ionicons name="star" size={size} color={color} />
           ),
         }}
+       />
+       <Tabs.Screen
+        name="signup/signup"
+        options={{
+          title: 'Signup',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="star" size={size} color={color} />
+          ),
+        }}
+        />
+      <Tabs.Screen
+        name="login/login"
+        options={{
+          title: 'Login',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="star" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="login/profile_page"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" size={size} color={color} />
+          ),
+        }}
       />
     </Tabs>
   );
