@@ -12,6 +12,7 @@ export default function Example() {
     try {
       const response = await axios.get(`${url}/api/posts/${tempPost}`);
       setExample(response.data);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log("Error getting example", error);
