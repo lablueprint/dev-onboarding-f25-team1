@@ -94,11 +94,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  postRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
   bookmarkButton: {
     marginLeft: 10,
   },
@@ -107,16 +102,6 @@ const styles = StyleSheet.create({
     height: 24,
     alignSelf: "center",
   },
-  commentContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    borderWidth: 1,
-    borderColor: '#e9e9e9ff',
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    backgroundColor: '#e9e9e9ff',
-  },
   commentIconRow: {
     paddingRight: 150,
   },
@@ -134,13 +119,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     backgroundColor: '#e9e9e9ff',
-  },
-  commentIconRow: {
-    paddingRight: 150,
-  },
-  input: {
-    flex: 1,
-    fontSize: 14,
-    marginLeft: 8,
   },
 });
