@@ -51,9 +51,36 @@ const deletePost = async (req, res) => {
   res.status(200).json(post)
 }
 
+//toggle like on a post 
+const toggleLike = async (req, res) => {
+  const { id } = req.params
+  const { userId } = req.body 
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "post not found" })
+  }
+
+  const post = await Post.findById(id)
+  if (!post) {
+    return res.status(404).json({ error: "post not found" })
+  }
+
+  const isLiked = post.likedBy.includes(userId)
+  const updatedPost = await Post.findByIdAndUpdate(
+    id,
+    isLiked
+      ? { $pull: { likedBy: userId } }  // Unlike
+      : { $addToSet: { likedBy: userId } }, // Like
+    { new: true }
+  )
+  res.status(200).json(updatedPost)
+}
+
+
 module.exports = {
     getAllPosts,
     getPost,
     createPost,
     deletePost,
+    toggleLike
 }
