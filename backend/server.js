@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const app = express()
 const postRoutes = require('./routes/posts')
 
+
 app.use(express.json())
 
 app.use((req, res, next) => {
