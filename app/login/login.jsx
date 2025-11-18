@@ -9,6 +9,7 @@ export default function Login (){
 
     function handleLogin(){
         console.log ({username, password});
+        router.push('/')
     }
 
     return(
