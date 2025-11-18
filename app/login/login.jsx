@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function Login (){
     const [username, setUsername]= useState('');
@@ -9,7 +9,7 @@ export default function Login (){
 
     function handleLogin(){
         console.log ({username, password});
-        router.push('/')
+        router.push('/post/home')
     }
 
     return(
