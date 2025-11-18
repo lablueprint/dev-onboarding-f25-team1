@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-  const url = 'http://localhost:4000'
+  const url = 'http://localhost:4000';
   const usernameToFetch = 'talking.yam';
 
 
@@ -17,8 +17,9 @@ export default function Profile() {
       const response = await axios.get(`${url}/api/profile/${usernameToFetch}`);
 
       setFirstName(response.data.firstName);
-      setFirstName(response.data.firstName);
-      setFirstName(response.data.firstName);
+      setLastName(response.data.lastName);
+      setUsername(response.data.username);
+      
       console.log(response.data);
       return response.data;
       } catch (error) {
@@ -27,7 +28,7 @@ export default function Profile() {
       }
     };
 
-    //get user info instantly
+    //get user info instantly   
     useEffect(() => {
       getUserInfo();
     }, []);
