@@ -15,7 +15,11 @@ export default function CreatePost() {
 
       <Button
         title="Submit"
-        onPress={() => console.log(title, description)}
+        onPress={() => {
+          const timeCreated = new Date();
+          console.log(title, description)
+          console.log("Date:", timeCreated); }
+        }
       />
     </View>
   );
