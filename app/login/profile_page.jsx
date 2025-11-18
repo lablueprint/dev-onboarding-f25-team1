@@ -1,11 +1,39 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+  const url = 'http://localhost:4000';
+  const usernameToFetch = 'talking.yam';
+
 
 export default function Profile() {
   //set up state variables which can be changed
-  const [firstName, setFirstName] = useState('Gokul'); //will set to empty string for acc implementation
-  const [lastName, setLastName] = useState('Nambiar'); 
-  const [username, setUsername] = useState('talking.yam')
+  const [firstName, setFirstName] = useState(''); //will set to empty string for acc implementation
+  const [lastName, setLastName] = useState(''); 
+  const [username, setUsername] = useState('')
+
+  const getUserInfo = async () => {
+    try {
+      const response = await axios.get(`${url}/api/profile/${usernameToFetch}`);
+
+      setFirstName(response.data.firstName);
+      setLastName(response.data.lastName);
+      setUsername(response.data.username);
+      
+      console.log(response.data);
+      return response.data;
+      } catch (error) {
+        console.log("Error getting profile", error);
+        return null;
+      }
+    };
+
+    //get user info instantly   
+    useEffect(() => {
+      getUserInfo();
+    }, []);
+    
+  
 
   return (
 
