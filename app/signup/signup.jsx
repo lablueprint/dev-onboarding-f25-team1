@@ -1,5 +1,8 @@
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Button, ScrollView, Text, TextInput, View } from 'react-native';
+
+
 
 
 export default function Signup() {
@@ -9,7 +12,15 @@ export default function Signup() {
   const [userPassword, setPassword] = useState('');
   const [confirmUserPassword, setConfirmUserPassword] = useState('');
 
+  const router = useRouter();
+
   const handleSubmit = () => {
+    const msg = verifyPassword(userPassword, confirmUserPassword)
+    
+    if (msg !== '') {
+      console.log('Signup error:', msg);
+      return;
+    }
     console.log({
       firstName,
       lastName,
@@ -17,7 +28,10 @@ export default function Signup() {
       userPassword,
       confirmUserPassword,
     });
+     router.push('/post/home');
   };
+
+
 
   return (
     <ScrollView>
@@ -71,4 +85,29 @@ export default function Signup() {
 
     </ScrollView>
   );
+}
+
+function verifyPassword(password, confirmPassword) {
+  if (password.length <= 8) {
+    return 'Password must be greater than 8 characters.';
+  }
+
+  let hasNumber = false;
+  for (let i = 0; i < password.length; i++) {
+    const code = password.charCodeAt(i);
+    if (code >= 48 && code <= 57) {
+      hasNumber = true;
+      break;
+    }
+  }
+
+  if (!hasNumber) {
+    return 'Password must contain at least one number.';
+  }
+
+  if (password !== confirmPassword) {
+    return 'Passwords must match.';
+  }
+
+  return '';
 }
