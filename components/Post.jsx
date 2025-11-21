@@ -2,9 +2,15 @@ import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from '
 import { FontAwesome } from '@expo/vector-icons';
 import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
 import { useState } from 'react';
+import axios from 'axios';
 
 const bookmarkedImage = require("../assets/images/post_bookmarked.png");
 const notBookmarkedImage = require("../assets/images/post_not_bookmarked.png");
+
+const url = process.env.EXPO_PUBLIC_SERVER_URL;
+console.log("Backend URL:", url);
+const tempPost = '6912849925e22dd1342d0eaf';
+
 export default function Post({ title, description }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -29,6 +35,19 @@ export default function Post({ title, description }) {
     */
   }
 
+  const handleLikePress = async () => {
+    setIsLiked(!isLiked);
+    try{
+      const response = await axios.post(`${url}/api/posts/${tempPost}/like`);
+      setIsLiked(response.data.isLiked);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error toggling like", error);
+      return null;
+    }
+  }
+
   const bookmarkIconSource = isBookmarked ? bookmarkedImage : notBookmarkedImage;
 
   return (
@@ -40,7 +59,7 @@ export default function Post({ title, description }) {
             <Pressable style={styles.bookmarkButton} onPress={handleBookmarkPress}>
               <Image source={bookmarkIconSource} style={styles.image} />
             </Pressable>
-            <Pressable onPress={() => setIsLiked(!isLiked)}>
+            <Pressable onPress={() => handleLikePress()}>
                 {isLiked ? (<FontAwesome name="heart" size={25} color="red" />) 
                 : (<FontAwesome name="heart-o" size={25} color="grey" />)}
               </Pressable>
