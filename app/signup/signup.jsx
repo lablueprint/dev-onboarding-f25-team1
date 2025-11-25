@@ -1,9 +1,6 @@
-import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Button, ScrollView, Text, TextInput, View } from 'react-native';
-
-
-
+import { Alert, Button, ScrollView, Text, TextInput, View } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function Signup() {
   const [firstName, setFirstName] = useState('');
@@ -16,9 +13,10 @@ export default function Signup() {
 
   const handleSubmit = () => {
     const msg = verifyPassword(userPassword, confirmUserPassword)
+
     
     if (msg !== '') {
-      console.log('Signup error:', msg);
+      Alert.alert('Signup Error', msg)
       return;
     }
     console.log({
