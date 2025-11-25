@@ -2,11 +2,11 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
-
+const cors = require('cors')
 const app = express()
 const postRoutes = require('./routes/posts')
 const profileRoutes = require('./routes/profile')
-
+app.use(cors())
 app.use(express.json())
 
 app.use((req, res, next) => {
