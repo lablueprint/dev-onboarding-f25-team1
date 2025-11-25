@@ -1,8 +1,9 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
-import { useState } from 'react';
+import { IconMessageCircle } from '@tabler/icons-react-native';
 import axios from "axios";
+import { useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import CommentSection from './CommentSection';
 
 const api = axios.create({
   baseURL: "http://172.22.121.227:4000/api",
@@ -74,25 +75,7 @@ export default function Post({ postID, title, description }) {
         </View>
 
         {showCommentBox && (
-          <View style={styles.commentContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Write a comment..."
-              value={text}
-              onChangeText={setText}
-              autoCapitalize="none"
-              multiline
-            />
-            <Pressable
-              onPress={submitComment}
-              onPressIn={() => setIsCommented(true)}
-              onPressOut={() => setIsCommented(false)}
-            >
-              {isCommented
-                ? <IconCircleArrowUpFilled size={28} color="black" />
-                : <IconCircleArrowUp size={28} color="black" />}
-            </Pressable>
-          </View>
+          <CommentSection postID={"postid"}/>
         )}
       </View>
     </ScrollView>
