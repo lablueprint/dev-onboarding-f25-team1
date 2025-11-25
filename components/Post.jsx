@@ -7,7 +7,7 @@ import axios from 'axios';
 const bookmarkedImage = require("../assets/images/post_bookmarked.png");
 const notBookmarkedImage = require("../assets/images/post_not_bookmarked.png");
 
-const url = process.env.EXPO_PUBLIC_SERVER_URL;
+const url = 'http://localhost:4000'
 console.log("Backend URL:", url);
 const tempPost = '6912849925e22dd1342d0eaf';
 
