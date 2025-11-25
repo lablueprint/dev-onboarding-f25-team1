@@ -1,8 +1,8 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
-import { useState } from 'react';
+import { IconCircleArrowUp, IconCircleArrowUpFilled } from '@tabler/icons-react-native';
 import axios from "axios";
+import { useState } from 'react';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import Comment from './Comment';
 
 const api = axios.create({
     baseURL: "http://172.22.121.227:4000/api",
@@ -28,25 +28,31 @@ export default function CommentSection({ postID }) {
     };
 
     return (
-        <View style={styles.commentContainer}>
-            <TextInput
-                style={styles.input}
-                placeholder="Write a comment..."
-                value={text}
-                onChangeText={setText}
-                autoCapitalize="none"
-                multiline
-            />
-            <Pressable
-                onPress={submitComment}
-                onPressIn={() => setIsCommented(true)}
-                onPressOut={() => setIsCommented(false)}
-            >
-                {isCommented
-                    ? <IconCircleArrowUpFilled size={28} color="black" />
-                    : <IconCircleArrowUp size={28} color="black" />}
-            </Pressable>
-        </View>
+        <>
+            <Comment user="username" text="this is username's comment" />
+            <Comment user="username" text="this is username's comment" />
+            <Comment user="username" text="this is username's comment" />
+            <Comment user="username" text="this is username's comment" />
+            <View style={styles.commentContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Write a comment..."
+                    value={text}
+                    onChangeText={setText}
+                    autoCapitalize="none"
+                    multiline
+                />
+                <Pressable
+                    onPress={submitComment}
+                    onPressIn={() => setIsCommented(true)}
+                    onPressOut={() => setIsCommented(false)}
+                >
+                    {isCommented
+                        ? <IconCircleArrowUpFilled size={28} color="black" />
+                        : <IconCircleArrowUp size={28} color="black" />}
+                </Pressable>
+            </View>
+        </>
     );
 }
 
