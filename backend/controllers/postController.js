@@ -54,12 +54,16 @@ const deletePost = async (req, res) => {
 //toggle like on a post 
 const toggleLike = async (req, res) => {
   const { id } = req.params
-  const { userId } = req.body 
+  const userId = req.body && req.body.userId
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "post not found" })
   }
 
+  if (!userId) {
+    return res.status(400).json({ error: "userId is required in request body" })
+  }
+  
   const post = await Post.findById(id)
   if (!post) {
     return res.status(404).json({ error: "post not found" })
