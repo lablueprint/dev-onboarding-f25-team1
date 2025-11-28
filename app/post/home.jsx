@@ -21,7 +21,7 @@ export default function PostHome() {
       <View style={styles.container}>
         <Text>Post Home Page</Text>
         {posts.map((post) => (
-          <Post key={post._id} title={post.title} description={post.description} />
+          <Post key={post._id} postId={post._id} title={post.title} description={post.description} />
         ))}
       </View>
     </ScrollView>

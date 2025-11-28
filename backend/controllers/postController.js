@@ -63,18 +63,22 @@ const toggleLike = async (req, res) => {
   if (!userId) {
     return res.status(400).json({ error: "userId is required in request body" })
   }
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ error: "invalid userId" })
+  }
   
   const post = await Post.findById(id)
   if (!post) {
     return res.status(404).json({ error: "post not found" })
   }
-
-  const isLiked = post.likedBy.includes(userId)
+  //MongoDB stores id fields as ObjectId type, so we need to convert the userId string to ObjectId for comparison
+  const userObjectId = new mongoose.Types.ObjectId(userId)
+  const isLiked = post.likedBy.some((u) => u.equals(userObjectId))
   const updatedPost = await Post.findByIdAndUpdate(
     id,
     isLiked
-      ? { $pull: { likedBy: userId } }  // Unlike
-      : { $addToSet: { likedBy: userId } }, // Like
+      ? { $pull: { likedBy: userObjectId } }  // Unlike
+      : { $addToSet: { likedBy: userObjectId } }, // Like
     { new: true }
   )
   res.status(200).json(updatedPost)

@@ -1,17 +1,17 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 const bookmarkedImage = require("../assets/images/post_bookmarked.png");
 const notBookmarkedImage = require("../assets/images/post_not_bookmarked.png");
 
 const url = 'http://localhost:4000'
 console.log("Backend URL:", url);
-const tempPost = '6912849925e22dd1342d0eaf';
+const demoUserId = '000000000000000000000001';
 
-export default function Post({ title, description }) {
+export default function Post({ title, description, postId }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [text, setText] = useState('');
@@ -36,12 +36,16 @@ export default function Post({ title, description }) {
   }
 
   const handleLikePress = async () => {
-    setIsLiked(!isLiked);
     try{
-      const response = await axios.post(`${url}/api/posts/${tempPost}/like`);
-      setIsLiked(response.data.isLiked);
-      console.log(response.data);
-      return response.data;
+      const response = await axios.post(`${url}/api/posts/${postId}/like`,{ userId: demoUserId }
+      );
+      const updated = response.data;
+      const likedNow = Array.isArray(updated?.likedBy)
+        ? updated.likedBy.includes(demoUserId)
+        : false;
+      setIsLiked(likedNow);
+      console.log('Updated post after like toggle:', updated);
+      return updated;
     } catch (error) {
       console.log("Error toggling like", error);
       return null;
