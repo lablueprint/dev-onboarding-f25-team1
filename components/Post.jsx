@@ -1,11 +1,17 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
+import axios from 'axios';
 import { useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 const bookmarkedImage = require("../assets/images/post_bookmarked.png");
 const notBookmarkedImage = require("../assets/images/post_not_bookmarked.png");
-export default function Post({ title, description }) {
+
+const url = 'http://localhost:4000'
+console.log("Backend URL:", url);
+const demoUserId = '000000000000000000000001';
+
+export default function Post({ title, description, postId }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [text, setText] = useState('');
@@ -29,6 +35,23 @@ export default function Post({ title, description }) {
     */
   }
 
+  const handleLikePress = async () => {
+    try{
+      const response = await axios.post(`${url}/api/posts/${postId}/like`,{ userId: demoUserId }
+      );
+      const updated = response.data;
+      const likedNow = Array.isArray(updated?.likedBy)
+        ? updated.likedBy.includes(demoUserId)
+        : false;
+      setIsLiked(likedNow);
+      console.log('Updated post after like toggle:', updated);
+      return updated;
+    } catch (error) {
+      console.log("Error toggling like", error);
+      return null;
+    }
+  }
+
   const bookmarkIconSource = isBookmarked ? bookmarkedImage : notBookmarkedImage;
 
   return (
@@ -40,7 +63,7 @@ export default function Post({ title, description }) {
             <Pressable style={styles.bookmarkButton} onPress={handleBookmarkPress}>
               <Image source={bookmarkIconSource} style={styles.image} />
             </Pressable>
-            <Pressable onPress={() => setIsLiked(!isLiked)}>
+            <Pressable onPress={() => handleLikePress()}>
                 {isLiked ? (<FontAwesome name="heart" size={25} color="red" />) 
                 : (<FontAwesome name="heart-o" size={25} color="grey" />)}
               </Pressable>
@@ -94,11 +117,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  postRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
   bookmarkButton: {
     marginLeft: 10,
   },
@@ -106,24 +124,6 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     alignSelf: "center",
-  },
-  commentContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    borderWidth: 1,
-    borderColor: '#e9e9e9ff',
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    backgroundColor: '#e9e9e9ff',
-  },
-  commentIconRow: {
-    paddingRight: 150,
-  },
-  input: {
-    flex: 1,
-    fontSize: 14,
-    marginLeft: 8,
   },
   commentContainer: {
     flexDirection: 'row',
