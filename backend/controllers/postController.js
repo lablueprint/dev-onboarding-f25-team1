@@ -51,6 +51,33 @@ const deletePost = async (req, res) => {
   res.status(200).json(post)
 }
 
+// check if a post is liked by a user
+const getIsLiked = async (req, res) => {
+  const { id } = req.params
+  const userId = req.query && req.query.userId
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "post not found" })
+  }
+
+  if (!userId) {
+    return res.status(400).json({ error: "userId is required as query param" })
+  }
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ error: "invalid userId" })
+  }
+
+  const post = await Post.findById(id)
+  if (!post) {
+    return res.status(404).json({ error: "post not found" })
+  }
+
+  const userObjectId = new mongoose.Types.ObjectId(userId)
+  const likedBy = Array.isArray(post.likedBy) ? post.likedBy : []
+  const isLiked = likedBy.some((u) => u.equals(userObjectId))
+  return res.status(200).json({ isLiked })
+}
+
 //toggle like on a post 
 const toggleLike = async (req, res) => {
   const { id } = req.params
@@ -90,5 +117,6 @@ module.exports = {
     getPost,
     createPost,
     deletePost,
-    toggleLike
+  getIsLiked,
+  toggleLike
 }

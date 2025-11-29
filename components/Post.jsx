@@ -7,6 +7,11 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { FontAwesome } from '@expo/vector-icons';
+import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 const bookmarkedImage = require("../assets/images/post_bookmarked.png");
 const notBookmarkedImage = require("../assets/images/post_not_bookmarked.png");
@@ -54,6 +59,21 @@ export default function Post({ title, description, postId }) {
       return null;
     }
   };
+
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      try {
+        if (!postId) return;
+        const res = await axios.get(`${url}/api/posts/${postId}/liked`, {
+          params: { userId: demoUserId },
+        });
+        setIsLiked(Boolean(res.data?.isLiked));
+      } catch (err) {
+        console.log('Error fetching like status', err);
+      }
+    };
+    fetchLikeStatus();
+  }, [postId]);
 
   const bookmarkIconSource = isBookmarked ? bookmarkedImage : notBookmarkedImage;
 
