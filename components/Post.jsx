@@ -36,21 +36,6 @@ export default function Post({ postID, title, description }) {
     // for getting comments
   }
 
-  const submitComment = async () => {
-    try {
-      const response = await api.post(`/comments`, {
-        postID: "postID for now", 
-        user: "abc123",
-        text: text,
-      });
-      console.log(text)
-      console.log(postID)
-      console.log("Comment created: ", response.data)
-    } catch (err) {
-      console.log("Error: ", err)
-    }
-  };
-
   const bookmarkIconSource = isBookmarked ? bookmarkedImage : notBookmarkedImage;
 
   return (
@@ -75,7 +60,7 @@ export default function Post({ postID, title, description }) {
         </View>
 
         {showCommentBox && (
-          <CommentSection postID={"postid"}/>
+          <CommentSection postID={"post1"}/>
         )}
       </View>
     </ScrollView>

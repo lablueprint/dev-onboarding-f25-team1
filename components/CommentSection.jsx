@@ -1,38 +1,84 @@
 import { IconCircleArrowUp, IconCircleArrowUpFilled } from '@tabler/icons-react-native';
 import axios from "axios";
-import { useState } from 'react';
-import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { useEffect, useState, useCallback } from 'react';
+import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import Comment from './Comment';
 
 const api = axios.create({
-    baseURL: "http://172.22.121.227:4000/api",
+    baseURL: "http://192.168.4.50:4000/api",
 });
 
 export default function CommentSection({ postID }) {
     const [text, setText] = useState('');
     const [isCommented, setIsCommented] = useState(false);
+    const [comments, setComments] = useState([]);
+    const currentUser = "username";
+
+    const loadComments = useCallback(async () => {
+        try {
+            const result = await api.get(`/comments/${postID}`);
+            console.log("Loaded comments:", result.data); 
+            setComments(result.data);
+        } catch (err) {
+            console.log("Failed to fetch comments: ", err);
+        }
+    }, [postID]);
+
+    useEffect(() => {
+        loadComments();
+    }, [loadComments]);
 
     const submitComment = async () => {
         try {
             const response = await api.post(`/comments`, {
-                postID: "postID for now",
-                user: "abc123",
+                postID: postID,
+                user: currentUser,
                 text: text,
             });
             console.log(text)
             console.log(postID)
+            
+            const newComment = response.data;
+            setComments(prev => [...prev, newComment]);
+            
+            setText("");    
             console.log("Comment created: ", response.data)
+
+            await loadComments();
         } catch (err) {
             console.log("Error: ", err)
         }
     };
 
+     const deleteComment = async (commentId) => {
+        try {
+            await api.delete(`/comments/${commentId}`);
+            // Remove comment from local state immediately
+            setComments(prev => prev.filter(comment => comment._id !== commentId));
+            console.log("Comment deleted: ", commentId);
+            await loadComments();
+        } catch (err) {
+            console.log("Error deleting comment: ", err);
+            // Reload comments to ensure consistency if delete failed
+            await loadComments();
+        }
+    };
+
     return (
         <>
-            <Comment user="username" text="this is username's comment" />
-            <Comment user="username" text="this is username's comment" />
-            <Comment user="username" text="this is username's comment" />
-            <Comment user="username" text="this is username's comment" />
+            <ScrollView style={{ maxHeight: 200 }}>
+                {comments.map((comment) => (
+                    <Comment
+                        key={comment._id}
+                        commentId={comment._id}    
+                        user={comment.user}
+                        text={comment.text} 
+                        currentUser={currentUser}
+                        onDelete={deleteComment}
+                    />
+                ))}
+            </ScrollView>
+
             <View style={styles.commentContainer}>
                 <TextInput
                     style={styles.input}

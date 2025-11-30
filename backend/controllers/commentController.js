@@ -1,12 +1,12 @@
 // const express = require("express");
 // const router = express.Router();
+// const { identifierToKeywordKind } = require("typescript");
 const Comment = require("../models/CommentModel");
 
 // creating a comment
 const createComment = async (req, res) => {
     console.log("Incoming POST to /comments:", req.body); 
     try {
-        console.log("incoming comment post", req.body);
         const comment = await Comment.create(req.body);
         res.status(200).json(comment);
     } catch (err) {
@@ -24,7 +24,23 @@ const getCommentsForPost = async (req, res) => {
     }
 };
 
+// delete comment
+const deleteComment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleted = await Comment.findByIdAndDelete(id);
+
+        if (!deleted) {
+            return res.status(404).json({error: "Comment not found"});
+        }
+        res.status(200).json({message: "Comment deleted: ", id})
+    } catch (err) {
+        res.status(400).json({ error: err.message })
+    }
+}
+
 module.exports = {
     createComment,
-    getCommentsForPost
+    getCommentsForPost, 
+    deleteComment
 };
