@@ -4,6 +4,7 @@ import {
   IconCircleArrowUpFilled,
   IconMessageCircle,
 } from "@tabler/icons-react-native";
+import axios from "axios";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
