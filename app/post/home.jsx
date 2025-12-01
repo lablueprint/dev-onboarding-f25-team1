@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 import Post from "../../components/Post";
 
 export default function PostHome() {
@@ -19,9 +19,8 @@ export default function PostHome() {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Text>Post Home Page</Text>
         {posts.map((post) => (
-          <Post key={post._id} title={post.title} description={post.description} />
+          <Post key={post._id} postId={post._id} title={post.title} description={post.description} />
         ))}
       </View>
     </ScrollView>
@@ -30,12 +29,12 @@ export default function PostHome() {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: "#f9fafb",
+    paddingTop: StatusBar.currentHeight,
+    backgroundColor: "#F5FBFF",
   },
   container: {
-    flex: 1,
     alignItems: "center",
     padding: 20,
+    gap: 20,
   },
 });

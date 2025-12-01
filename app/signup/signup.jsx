@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Alert, Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
+const BACKEND_URL = 'http://localhost:4000';
+
 export default function Signup() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -11,29 +13,47 @@ export default function Signup() {
 
   const router = useRouter();
 
-  const handleSubmit = () => {
-    const msg = verifyPassword(userPassword, confirmUserPassword)
-
-    
-    if (msg !== '') {
-      Alert.alert('Signup Error', msg)
+  const handleSubmit = async () => {
+    // simple checks
+    if (!firstName || !lastName || !userName || !userPassword || !confirmUserPassword) {
+      Alert.alert('Signup Error', 'Please fill in every box.');
       return;
     }
-    console.log({
-      firstName,
-      lastName,
-      userName,
-      userPassword,
-      confirmUserPassword,
-    });
-     router.push('/post/home');
+
+    if (userPassword !== confirmUserPassword) {
+      Alert.alert('Signup Error', 'Passwords must match.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          username: userName,
+          password: userPassword,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        Alert.alert('Signup Error', data?.error || 'Something went wrong.');
+        return;
+      }
+
+      console.log('User created:', data.user);
+      router.push('/post/home');
+    } catch (err) {
+      console.log('Network error:', err);
+      Alert.alert('Signup Error', 'Could not reach the server.');
+    }
   };
-
-
 
   return (
     <ScrollView>
-
       <View style={{ marginBottom: 20 }}>
         <Text>First Name:</Text>
         <TextInput
@@ -67,7 +87,12 @@ export default function Signup() {
           placeholder="Please enter your password:"
           value={userPassword}
           onChangeText={setPassword}
-        />
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="off"
+          textContentType="none"
+/>
       </View>
 
       <View style={{ marginBottom: 20 }}>
@@ -76,36 +101,15 @@ export default function Signup() {
           placeholder="Please confirm your password"
           value={confirmUserPassword}
           onChangeText={setConfirmUserPassword}
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="off"
+          textContentType="none"
         />
       </View>
 
       <Button title="Submit" onPress={handleSubmit} />
-
     </ScrollView>
   );
-}
-
-function verifyPassword(password, confirmPassword) {
-  if (password.length <= 8) {
-    return 'Password must be greater than 8 characters.';
-  }
-
-  let hasNumber = false;
-  for (let i = 0; i < password.length; i++) {
-    const code = password.charCodeAt(i);
-    if (code >= 48 && code <= 57) {
-      hasNumber = true;
-      break;
-    }
-  }
-
-  if (!hasNumber) {
-    return 'Password must contain at least one number.';
-  }
-
-  if (password !== confirmPassword) {
-    return 'Passwords must match.';
-  }
-
-  return '';
 }
