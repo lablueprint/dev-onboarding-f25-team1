@@ -6,14 +6,17 @@ import Post from '../components/Post';
 export default function Landing() {
   const router = useRouter();
 
+  const username = "talking.yam";
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to Blueprint!</Text>
       <Button title="Go to Example Page" onPress={() => router.push('/example/example')} />
-      <Button title="Go to Post Home Page" onPress={() => router.push('/post/home')} />
+      <Button title="Go to Post Home Page" onPress={() => router.push({ pathname: '/post/home', params: { username } })} />
+      <Button title="Go to Saved Posts Page" onPress={() => router.push({ pathname: '/saved/saved', params: { username } })} />
       <Button title="Go to Signup Page" onPress={() => router.push('/signup/signup')} />
       <Button title="Go to Login Page" onPress={() => router.push('/login/login')} />
-        <Post id={"6912849925e22dd1342d0eaf"} key={"examplePostId"} title={"Example Post Title"} description={"This is an example post description."} username={"talking.yam"} />
+      <Post postId={"6912849925e22dd1342d0eaf"} key={"examplePostId"} title={"Example Post Title"} description={"This is an example post description."} username={username} />
     </View>
   );
 }

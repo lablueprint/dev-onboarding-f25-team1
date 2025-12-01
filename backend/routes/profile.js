@@ -12,7 +12,7 @@ const router = express.Router();
 //general routes
 router.get('/:username', getUserInfo);
 router.get('/:username/saved-posts', getSavedPosts);
-router.delete('/:username/saved-posts/:postId', deleteSavedPost);
-router.post('/:username/saved-posts/:postId', addToSavedPosts);
+router.delete('/:username/saved-posts/:_id', deleteSavedPost);
+router.post('/:username/saved-posts/:_id', addToSavedPosts);
 
 module.exports = router;

@@ -26,10 +26,8 @@ const getUserInfo = async (req, res) => { //will return fname, lname, and userna
 // List saved posts for a user (by username)
 const getSavedPosts = async (req, res) => {
   const { username } = req.params
-  const limit = Math.min(parseInt(req.query.limit) || 50, 200)
-  const offset = parseInt(req.query.offset) || 0
   try {
-    const user = await Profile.findOne({ username }).populate({ path: 'savedPosts', options: { sort: { createdAt: -1 }, limit, skip: offset } })
+    const user = await Profile.findOne({ username }).populate('savedPosts')
     if (!user) return res.status(404).json({ error: 'user not found' })
     return res.status(200).json({ savedPosts: user.savedPosts })
   } catch (err) {

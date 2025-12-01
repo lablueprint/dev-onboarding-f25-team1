@@ -20,7 +20,7 @@ const profileSchema = new Schema({
   },
 
   savedPosts: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Post'
 }],
   //do i need to ad a profileID, similar to postID from the example?

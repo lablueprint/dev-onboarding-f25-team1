@@ -7,26 +7,25 @@ import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-nativ
 const bookmarkedImage = require("../assets/images/post_bookmarked.png");
 const notBookmarkedImage = require("../assets/images/post_not_bookmarked.png");
 
-const url = "http://localhost:4000";
+const url = "https://debilitative-adventuresomely-adela.ngrok-free.dev";
 console.log("Backend URL:", url);
 const demoUserId = "000000000000000000000001";
 
-export default function Post({ title, description, postId }) {
+export default function Post({ title, description, postId, username, bookmarked = false }) {
   const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(bookmarked);
   const [text, setText] = useState("");
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [isCommented, setIsCommented] = useState(false);
 
   const savePost = async () => {
-    const postId = id
     if (!postId) {
       console.error('savePost called without post id')
       return
     }
 
     try {
-      const response = await axios.post(`${API_BASE}/api/profile/${username}/saved-posts/${postId}`)
+      const response = await axios.post(`${url}/api/profile/${username}/saved-posts/${postId}`)
       console.log('Post saved:', response.data)
     } catch (error) {
       console.error('Error saving post:', error)
@@ -34,22 +33,41 @@ export default function Post({ title, description, postId }) {
   }
 
   const unsavePost = async () => {
-    const postId = id ?? key
     if (!postId) {
       console.error('unsavePost called without post id')
       return
     }
 
     try {
-      const response = await axios.delete(`${API_BASE}/api/profile/${username}/saved-posts/${postId}`)
+      const response = await axios.delete(`${url}/api/profile/${username}/saved-posts/${postId}`)
       console.log('Post unsaved:', response.data)
     } catch (error) {
       console.error('Error unsaving post:', error)
     }
   }
 
+  // Check if the post is bookmarked by user and update isBookmarked state
+  useEffect(() => {
+    const fetchBookmarkStatus = async () => {
+      if (!postId || !username) return;
+
+      try {
+        const response = await fetch(`http://localhost:4000/api/profile/${username}/saved-posts`);
+        const data = await response.json();
+        const savedPosts = data?.savedPosts || []; 
+        const isSaved = savedPosts.some(savedPost => savedPost._id === postId);
+        setIsBookmarked(isSaved);
+      } catch (err) {
+        console.error('Error fetching bookmark status:', err);
+        setIsBookmarked(false); 
+      }
+    };
+    
+    fetchBookmarkStatus();
+  }, [postId, username]);
+
   function handleBookmarkPress() {
-    setIsBookmarked(!isBookmarked);
+    setIsBookmarked(prev => !prev);
     if(!isBookmarked){
       savePost();
     }
@@ -82,21 +100,6 @@ export default function Post({ title, description, postId }) {
       return null;
     }
   };
-
-  useEffect(() => {
-    const fetchLikeStatus = async () => {
-      try {
-        if (!postId) return;
-        const res = await axios.get(`${url}/api/posts/${postId}/liked`, {
-          params: { userId: demoUserId },
-        });
-        setIsLiked(Boolean(res.data?.isLiked));
-      } catch (err) {
-        console.log('Error fetching like status', err);
-      }
-    };
-    fetchLikeStatus();
-  }, [postId]);
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
