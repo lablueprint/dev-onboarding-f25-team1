@@ -7,6 +7,8 @@ const cors = require('cors')
 const app = express()
 const postRoutes = require('./routes/posts')
 const profileRoutes = require('./routes/profile')
+const signupRoutes = require('./routes/signup')
+
 
 app.use(express.json())
 
@@ -28,6 +30,7 @@ app.use((req, res, next) => {
 // routes
 app.use('/api/posts', postRoutes)
 app.use('/api/profile', profileRoutes)
+app.use('/api/signup', signupRoutes)
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
