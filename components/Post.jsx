@@ -1,17 +1,8 @@
 import { FontAwesome } from "@expo/vector-icons";
-import {
-  IconCircleArrowUp,
-  IconCircleArrowUpFilled,
-  IconMessageCircle,
-} from "@tabler/icons-react-native";
 import axios from "axios";
-import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
 import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 const bookmarkedImage = require("../assets/images/post_bookmarked.png");
 const notBookmarkedImage = require("../assets/images/post_not_bookmarked.png");
