@@ -66,6 +66,21 @@ export default function Post({ title, description, postId }) {
     fetchLikeStatus();
   }, [postId]);
 
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      try {
+        if (!postId) return;
+        const res = await axios.get(`${url}/api/posts/${postId}/liked`, {
+          params: { userId: demoUserId },
+        });
+        setIsLiked(Boolean(res.data?.isLiked));
+      } catch (err) {
+        console.log('Error fetching like status', err);
+      }
+    };
+    fetchLikeStatus();
+  }, [postId]);
+
   const bookmarkIconSource = isBookmarked ? bookmarkedImage : notBookmarkedImage;
 
   return (
