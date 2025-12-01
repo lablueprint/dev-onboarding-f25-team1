@@ -26,6 +26,13 @@ export default function RootLayout() {
         }}
       />
       <Tabs.Screen
+        name="saved/saved"
+        options={{
+          title: "Saved Posts",
+          tabBarIcon: ({ color, size }) => <Ionicons name="bookmark" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="signup/signup"
         options={{
           title: "Signup",

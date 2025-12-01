@@ -19,6 +19,10 @@ const profileSchema = new Schema({
     unique: true, //each user must have a unique username, but first/names can overlap
   },
 
+  savedPosts: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
+}],
   //do i need to ad a profileID, similar to postID from the example?
 
 }, {timestamps: true})

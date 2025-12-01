@@ -1,8 +1,11 @@
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 import Post from "../../components/Post";
 
 export default function PostHome() {
+  const params = useLocalSearchParams();
+  const { username } = params;
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {
@@ -20,7 +23,7 @@ export default function PostHome() {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         {posts.map((post) => (
-          <Post key={post._id} postId={post._id} title={post.title} description={post.description} />
+          <Post key={post._id} postId={post._id} title={post.title} description={post.description} username={username}/>
         ))}
       </View>
     </ScrollView>
