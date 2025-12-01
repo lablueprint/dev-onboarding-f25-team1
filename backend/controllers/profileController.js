@@ -1,10 +1,10 @@
 const Profile = require('../models/ProfileModel')
-const mongoose = require('mongoose')
 
 
 const getUserInfo = async (req, res) => { //will return fname, lname, and username upon username input
   //using usernmae as each user has a unique one
   const {username} = req.params
+  
 
   const user = await Profile.findOne({ username : username })
   
@@ -22,6 +22,31 @@ const getUserInfo = async (req, res) => { //will return fname, lname, and userna
 
 }
 
+const getLoginInfo = async (req, res) => { 
+  const {username} = req.params
+  const password = req.query.password;
+  try {
+    const user = await Profile.findOne({ username : username })
+    
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    if (user.password === password) {
+      return res.json({success: true});
+    }
+    else {
+      return res.json({success: false, message: "Incorrect password"});
+    }
+  }
+  catch {
+    return res.json({
+      success: false,})
+  }
+
+
+}
 module.exports = {
   getUserInfo,
+  getLoginInfo
 }

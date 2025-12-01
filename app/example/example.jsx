@@ -42,7 +42,7 @@ export default function Example() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.step}>Let's experiment with the backend!</Text>
+          <Text style={styles.step}>Lets experiment with the backend!</Text>
           <Text style={styles.step}>1. Start the backend server by cd-ing into the backend (cd backend)</Text>
           <Text style={styles.step}>2. Run nodemon server.js to start the development server</Text>
           <Button

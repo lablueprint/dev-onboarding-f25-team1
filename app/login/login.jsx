@@ -1,6 +1,9 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import axios from 'axios';
+
+const url = 'http://localhost:4000'
 
 export default function Login (){
     const [username, setUsername]= useState('');
@@ -8,9 +11,28 @@ export default function Login (){
     const router = useRouter();
 
     function handleLogin(){
+       verifyPassword();
         console.log ({username, password});
-        router.push('/post/home')
+        //router.push('/post/home')
     }
+
+    const verifyPassword= async () => {
+    try {
+      const response = await axios.get(`${url}/login/${username}`,{params:{password}});
+      console.log(response.data);
+      if (response.data.success){
+        router.push('/post/home');
+        return response.data;
+      }
+      else{
+        alert ("Incorrect password");
+        return response.data;
+      }
+      } catch (error) {
+        console.log("Error logging in", error);
+        return null;
+      }
+    };
 
     return(
         <ScrollView contentContainerStyle={styles.scrollContainer}>
