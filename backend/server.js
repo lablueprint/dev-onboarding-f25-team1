@@ -3,11 +3,24 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+
 const app = express()
 const postRoutes = require('./routes/posts')
 const profileRoutes = require('./routes/profile')
+const signupRoutes = require('./routes/signup')
+
 app.use(cors())
 app.use(express.json())
+
+// Enable CORS for Expo Web (8081) and local app
+app.use(cors({
+    origin: [
+        'http://localhost:8081'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false
+}))
 
 app.use((req, res, next) => {
     console.log(req.path, req.method)
@@ -17,6 +30,7 @@ app.use((req, res, next) => {
 // routes
 app.use('/api/posts', postRoutes)
 app.use('/api/profile', profileRoutes)
+app.use('/api/signup', signupRoutes)
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
