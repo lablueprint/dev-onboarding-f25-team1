@@ -9,7 +9,7 @@ const postRoutes = require('./routes/posts')
 const profileRoutes = require('./routes/profile')
 const signupRoutes = require('./routes/signup')
 
-
+app.use(cors())
 app.use(express.json())
 
 // Enable CORS for Expo Web (8081) and local app
