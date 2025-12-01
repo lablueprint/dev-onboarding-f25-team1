@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import Post from '../components/Post';
 
 export default function Landing() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function Landing() {
       <Button title="Go to Post Home Page" onPress={() => router.push('/post/home')} />
       <Button title="Go to Signup Page" onPress={() => router.push('/signup/signup')} />
       <Button title="Go to Login Page" onPress={() => router.push('/login/login')} />
+        <Post id={"6912849925e22dd1342d0eaf"} key={"examplePostId"} title={"Example Post Title"} description={"This is an example post description."} username={"talking.yam"} />
     </View>
   );
 }

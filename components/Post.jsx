@@ -1,8 +1,8 @@
 import { FontAwesome } from "@expo/vector-icons";
-import axios from "axios";
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { IconCircleArrowUp, IconCircleArrowUpFilled, IconMessageCircle } from '@tabler/icons-react-native';
+import axios from "axios";
 import { useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 const bookmarkedImage = require("../assets/images/post_bookmarked.png");
 const notBookmarkedImage = require("../assets/images/post_not_bookmarked.png");
@@ -18,13 +18,45 @@ export default function Post({ title, description, postId }) {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [isCommented, setIsCommented] = useState(false);
 
+  const savePost = async () => {
+    const postId = id
+    if (!postId) {
+      console.error('savePost called without post id')
+      return
+    }
+
+    try {
+      const response = await axios.post(`${API_BASE}/api/profile/${username}/saved-posts/${postId}`)
+      console.log('Post saved:', response.data)
+    } catch (error) {
+      console.error('Error saving post:', error)
+    }
+  }
+
+  const unsavePost = async () => {
+    const postId = id ?? key
+    if (!postId) {
+      console.error('unsavePost called without post id')
+      return
+    }
+
+    try {
+      const response = await axios.delete(`${API_BASE}/api/profile/${username}/saved-posts/${postId}`)
+      console.log('Post unsaved:', response.data)
+    } catch (error) {
+      console.error('Error unsaving post:', error)
+    }
+  }
+
   function handleBookmarkPress() {
     setIsBookmarked(!isBookmarked);
-
-    /*
-      TODO: setup backup schema to store saved post info
-      and issue POST / DELETE requests to server accordingly
-    */
+    if(!isBookmarked){
+      savePost();
+    }
+    else {
+      unsavePost();
+    }
+    
   }
 
   function handleCommentPress() {
