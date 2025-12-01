@@ -1,6 +1,8 @@
 const Profile = require('../models/ProfileModel')
 const mongoose = require('mongoose')
 
+//backend schema
+
 
 const getUserInfo = async (req, res) => { //will return fname, lname, and username upon username input
   //using usernmae as each user has a unique one

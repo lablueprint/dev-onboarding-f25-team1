@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
   const url = 'http://localhost:4000';
   const usernameToFetch = 'talking.yam';
@@ -10,7 +10,8 @@ export default function Profile() {
   //set up state variables which can be changed
   const [firstName, setFirstName] = useState(''); //will set to empty string for acc implementation
   const [lastName, setLastName] = useState(''); 
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
 
   const getUserInfo = async () => {
     try {
@@ -27,6 +28,30 @@ export default function Profile() {
         return null;
       }
     };
+
+  const updateUserInfo = async () => {
+    try {
+      const response = await axios.post(`${url}/api/profile/${usernameToFetch}`, { //post request
+        firstName,
+        lastName,
+        username
+      });
+      console.log("Profile updated:", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error updating profile", error);
+      return null;
+    }
+  };
+
+  const handleButtonPress = async () => {
+    if (isEditing) {
+      // save the changes
+      await updateUserInfo();
+    }
+    // toggle edit mode
+    setIsEditing(!isEditing);
+  };
 
     //get user info instantly   
     useEffect(() => {
@@ -50,18 +75,55 @@ export default function Profile() {
           
       
         
+        {/* set conditional rendering for each field using ternary operator */}
+        {/* USERNAME */}
+      {isEditing ? (
+        <TextInput
+          style={[styles.userDetails, styles.input]}
+          value={username}
+          onChangeText={setUsername}
+          placeholder="Username"
+        />
+      ) : (
+        <Text style={styles.userDetails}>@{username}</Text>
+        // <Text style={styles.userDetails}> @talking.yam</Text>
+
+      )}
+        
+        {/* first name */}
+      {isEditing ? (
+        <TextInput
+          style={[styles.userDetails, styles.input]}
+          value={firstName}
+          onChangeText={setFirstName}
+          placeholder="First Name"
+        />
+      ) : (
+        <Text style={styles.userDetails}>{firstName} {lastName}</Text>
+        // <Text style={styles.userDetails}> Gokul Nambiar </Text>
+      )}
+      
+
+        {/* last name */}
+
+      {isEditing && (
+        <TextInput
+          style={[styles.userDetails, styles.input]}
+          value={lastName}
+          onChangeText={setLastName}
+          placeholder="Last Name"
+        />
+      )}
+
+        <Pressable>
+
+         <Button 
+          title={isEditing ? "Save" : "Edit"} 
+          onPress={handleButtonPress}
+        />
 
 
-        <Text style = {styles.userDetails}>
-          
-          @{username}
-
-        </Text>
-        <Text style = {styles.userDetails}>
-
-          {firstName} {lastName}
-          
-        </Text>
+        </Pressable>
      
 
 
@@ -106,6 +168,20 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 100,     //half for circle profile pic
     marginBottom: 20,
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: 'rgba(83, 130, 199, 1)',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    width: '80%',
+    backgroundColor: '#fff'
+  },
+
+  buttonContainer: {
+    marginTop: 12,
   }
 
 
